@@ -106,6 +106,10 @@ class RegexToDFAConverter {
                         next.push_back(it);
                     j++;
                 }
+                if (what_letter_[curr_state[i]] == '#') {
+                    i = j;
+                    continue;
+                }
                 sort(next.begin(), next.end());
                 next.erase(unique(next.begin(), next.end()), next.end());
                 sort(next.begin(), next.end(), comp);
@@ -155,7 +159,9 @@ class RegexToDFAConverter {
                 (is_letter(expr[i - 1]) && is_letter(expr[i])) ||
                 (is_letter(expr[i - 1]) && expr[i] == '(')     ||
                 (expr[i - 1] == ')' && is_letter(expr[i]))     ||
-                (expr[i - 1] == '*' && is_letter(expr[i]))
+                (expr[i - 1] == '*' && is_letter(expr[i]))     ||
+                (expr[i - 1] == ')' && expr[i] == '(')         ||
+                (expr[i - 1] == '*' && expr[i] == '(')
             )
                 res += ".";
             res += expr[i];
@@ -225,8 +231,7 @@ class RegexToDFAConverter {
         SyntaxTreeNode* root = new SyntaxTreeNode;
         if (expr[curr_pos] == '(') {
             curr_pos++;
-            auto son = factor_eval(expr, curr_pos);
-            curr_pos++;
+            auto son = expression_eval(expr, curr_pos);
             root->first_pos = son->first_pos;
             root->last_pos = son->last_pos;
             root->sons.push_back(son);
@@ -236,6 +241,8 @@ class RegexToDFAConverter {
         else {
             if (expr[curr_pos] == kLambda)
                 root->nullable = true;
+            else if (!is_letter(expr[curr_pos]) && expr[curr_pos] != '#')
+                root->nullable = true, --curr_pos;
             else {
                 ++leaves_count_;
                 follow_pos_.resize((size_t)leaves_count_ + 1);
