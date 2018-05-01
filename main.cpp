@@ -86,6 +86,7 @@ class RegexToDFAConverter {
             que.front().push_back(it);
         sort(que.front().begin(), que.front().end(), comp);
 
+        mark_.clear();
         int num_states = 0;
         DFA res;
         mark_[que.front()] = ++num_states;
