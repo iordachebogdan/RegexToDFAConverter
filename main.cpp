@@ -3,13 +3,13 @@
 using namespace std;
 
 int main() {
-    //ifstream cin("data.in");
-    //ofstream cout("data.out");
+  //ifstream cin("data.in");
+  //ofstream cout("data.out");
 
-    RegexToDFAConverter converter;
+  RegexToDFAConverter converter;
 
-    string regex; cin >> regex;
-    cout << converter.convert(regex);
+  string regex; cin >> regex;
+  cout << converter.convert(regex);
 
-    return 0;
+  return 0;
 }
