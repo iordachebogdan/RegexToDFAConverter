@@ -50,7 +50,7 @@ The application will print to the standard output a DFA equivalent to this regul
 - on the eighth line, the number of transitions in the DFA
 - on each of the next lines, there will be a transition represented in the format `state_from letter state_to`
 
-# Example
+## Example
 For this regular expression:
 ```
 (a|$)a.bb*  
